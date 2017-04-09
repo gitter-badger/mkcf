@@ -34,7 +34,7 @@ void includeHeader(FILE *fpW){
 		fgets(inc_string, MAX_LINE_LEN, fpInc);
 
 		if(!(inc_string[0] == '#') && !(inc_string[0] == '\n'))
-			fprintf(fpW, "#include%s", inc_string);
+			fprintf(fpW, "#include %s", inc_string);
 		else
 			continue;
 	}
