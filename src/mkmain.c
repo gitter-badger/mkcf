@@ -10,11 +10,12 @@ int main(){
 	fp = fopen("main.c", "w");
 
 	includeHeader(fp);
-	fprintf(fp, "\n");
-	fprintf(fp, "int main(){\n");
-	fprintf(fp, "\n");
-	fprintf(fp, "\treturn 0;\n");
-	fprintf(fp, "}");
+
+	fputc('\n', fp);
+	fputs("int main(){", fp);
+	fputc('\n', fp);
+	fprintf("\treturn 0;", fp);
+	fputc('}', fp);
 
 	fclose(fp);
 
