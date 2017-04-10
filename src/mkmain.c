@@ -1,7 +1,9 @@
 #include <stdio.h>
+#include <string.h>
 #include "inc/config.h"
 
 void printHeader(FILE *fpW);
+void printMain(FILE*fpW);
 
 int main(){
 	FILE *fp;
@@ -9,10 +11,7 @@ int main(){
 	fputs("// Header\n", fp);
 	printHeader(fp);
 	fputs("\n// Sourcecode\n", fp);
-	fputs("int main(){\n", fp);
-	fputc('\n', fp);
-	fputs("\treturn 0;\n", fp);
-	fputc('}', fp);
+	printMain(fp);
 
 	fclose(fp);
 
@@ -33,4 +32,16 @@ void printHeader(FILE *fpW){
 			fprintf(fpW, "#include %s", inc_string);
 
 	fclose(fpInc);
+}
+
+void printMain(FILE *fpW){
+	FILE *fpR = fopen(MKCFCONF, "r");
+
+	fputs("int main(", fpW);
+	if( getConfOption(fpR, "mainarg", "yes") )
+		fputs("int argc, char *argv[]", fpW);
+	fputs( "){\n", fpW);
+	fputc('\n', fpW);
+	fputs("\treturn 0;\n", fpW);
+	fputc('}', fpW);
 }
