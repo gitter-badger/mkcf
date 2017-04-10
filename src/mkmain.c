@@ -1,20 +1,17 @@
-#include<stdio.h>
+#include <stdio.h>
+#include "inc/config.h"
 
-#define INCFILE "../conf/incfile.conf"
-#define MAX_LINE_LEN 100
-
-void includeHeader(FILE *fpW);
+void printHeader(FILE *fpW);
 
 int main(){
 	FILE *fp;
 	fp = fopen("main.c", "w");
-
-	includeHeader(fp);
-
+	fputs("// Header\n", fp);
+	printHeader(fp);
+	fputs("\n// Sourcecode\n", fp);
+	fputs("int main(){\n", fp);
 	fputc('\n', fp);
-	fputs("int main(){", fp);
-	fputc('\n', fp);
-	fprintf("\treturn 0;", fp);
+	fputs("\treturn 0;\n", fp);
 	fputc('}', fp);
 
 	fclose(fp);
@@ -22,7 +19,7 @@ int main(){
 	return 0;
 }
 
-void includeHeader(FILE *fpW){
+void printHeader(FILE *fpW){
 	FILE *fpInc;
 	char inc_string[MAX_LINE_LEN];
 
@@ -31,14 +28,9 @@ void includeHeader(FILE *fpW){
 		printf("Did not fount %s\n", INCFILE);
 		return;
 	}
-	while(!feof(fpInc)){
-		fgets(inc_string, MAX_LINE_LEN, fpInc);
 
-		if(!(inc_string[0] == '#') && !(inc_string[0] == '\n'))
+	while(getConfLine(fpInc, inc_string))
 			fprintf(fpW, "#include %s", inc_string);
-		else
-			continue;
-	}
 
 	fclose(fpInc);
 }
