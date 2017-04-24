@@ -5,9 +5,14 @@
 void printHeader(FILE *fpW);
 void printMain(FILE*fpW);
 
+
 int main(){
 	FILE *fp;
-	fp = fopen("main.c", "w");
+	if(!(fp = fopen("main.c", "w"))){
+		printf("Could not open %s\n", "main.c");
+		return 1;
+	}
+
 	fputs("// Header\n", fp);
 	printHeader(fp);
 	fputs("\n// Sourcecode\n", fp);
@@ -22,9 +27,8 @@ void printHeader(FILE *fpW){
 	FILE *fpInc;
 	char inc_string[MAX_LINE_LEN];
 
-	fpInc = fopen(INCFILE, "r");
-	if(!fpInc){
-		printf("Did not fount %s\n", INCFILE);
+	if(!(fpInc = fopen(INCFILE, "r"))){
+		printf("Could not open %s\n", INCFILE);
 		return;
 	}
 
@@ -35,7 +39,11 @@ void printHeader(FILE *fpW){
 }
 
 void printMain(FILE *fpW){
-	FILE *fpR = fopen(MKCFCONF, "r");
+	FILE *fpR;
+	if(!(fpR = fopen(MKCFCONF, "r"))){
+		printf("Could not open %s\n", MKCFCONF);
+		return;
+	}
 
 	fputs("int main(", fpW);
 	if( getConfOption(fpR, "mainarg", "yes") )
